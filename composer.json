@@ -1,0 +1,29 @@
+{
+    "name" : "brendt/stitcher",
+    "autoload" : {
+        "psr-4" : {
+            "Stitcher\\" : "src"
+        }
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "Tests\\" : "tests"
+        }
+    },
+    "require" : {
+        "php" : "^7.3",
+        "league/commonmark": "^0.19.2"
+    },
+    "require-dev" : {
+        "phpunit/phpunit" : "^8.3@dev",
+        "larapack/dd": "^1.1"
+    },
+    "authors" : [
+        {
+            "name" : "Brent Roose",
+            "email" : "brendt@stitcher.io"
+        }
+    ],
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
+}
