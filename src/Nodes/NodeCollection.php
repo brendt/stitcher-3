@@ -4,7 +4,6 @@ namespace Stitcher\Nodes;
 
 use ArrayAccess;
 use Iterator;
-use Stitcher\Exceptions\ConfigurationError;
 use Stitcher\Node;
 
 final class NodeCollection implements Iterator, ArrayAccess
@@ -12,17 +11,6 @@ final class NodeCollection implements Iterator, ArrayAccess
     private array $nodes;
 
     private $key = null;
-
-    public static function make(array $nodes, NodeFactory $factory): NodeCollection
-    {
-        return new self(array_map(function ($value) use ($factory) {
-            try {
-                return $factory->make($value);
-            } catch (ConfigurationError $exception) {
-                return $value;
-            }
-        }, $nodes));
-    }
 
     public function __construct(array $nodes)
     {

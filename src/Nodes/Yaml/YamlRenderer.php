@@ -6,7 +6,6 @@ use Stitcher\Exceptions\ConfigurationError;
 use Stitcher\Exceptions\InvalidNode;
 use Stitcher\Node;
 use Stitcher\NodeRenderer;
-use Stitcher\Nodes\NodeCollection;
 use Stitcher\Nodes\NodeFactory;
 use Stitcher\Nodes\RendererFactory;
 use Symfony\Component\Yaml\Parser;
