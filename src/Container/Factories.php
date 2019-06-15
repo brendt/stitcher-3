@@ -2,6 +2,7 @@
 
 namespace Stitcher\Container;
 
+use Stitcher\Nodes\NodeFactory;
 use Stitcher\Nodes\RendererFactory;
 
 /**
@@ -17,5 +18,12 @@ trait Factories
                 return new RendererFactory($this);
             }
         );
+    }
+
+    public function nodeFactory(): NodeFactory
+    {
+        return $this->singleton(NodeFactory::class, function () {
+            return new NodeFactory($this->filesystem());
+        });
     }
 }

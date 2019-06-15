@@ -3,8 +3,11 @@
 namespace Stitcher\Container;
 
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\Environment as CommonMarkEnvironment;
 use Stitcher\Services\Filesystem;
+use Symfony\Component\Yaml\Parser;
+use Twig\Environment as TwigEnvironment;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * @mixin \Stitcher\Container\Container
@@ -18,17 +21,28 @@ trait Services
         });
     }
 
-    public function commonMarkEnvironment(): Environment
+    public function markdownParser(): CommonMarkConverter
     {
-        return $this->singleton(Environment::class, function () {
-            return Environment::createCommonMarkEnvironment();
+        return $this->singleton(CommonMarkConverter::class, function () {
+            return new CommonMarkConverter([], CommonMarkEnvironment::createCommonMarkEnvironment());
         });
     }
 
-    public function markdownConverter(): CommonMarkConverter
+    public function yamlParser(): Parser
     {
-        return $this->singleton(CommonMarkConverter::class, function () {
-            return new CommonMarkConverter([], $this->commonMarkEnvironment());
+        return $this->singleton(Parser::class, function () {
+            return new Parser();
+        });
+    }
+
+    public function twigParser(): TwigEnvironment
+    {
+        return $this->singleton(TwigEnvironment::class, function () {
+            $loader = new FilesystemLoader(
+                $this->filesystem()->makeFullPath($this->config->templateDirectory)
+            );
+
+            return new TwigEnvironment($loader);
         });
     }
 }

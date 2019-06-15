@@ -1,0 +1,4 @@
+test:
+  template: template.twig
+  variables:
+    markdown: markdown.md

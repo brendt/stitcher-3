@@ -2,31 +2,47 @@
 
 namespace Stitcher\Nodes\Page;
 
-use Stitcher\Exception\InvalidNode;
+use Stitcher\Exceptions\InvalidNode;
 use Stitcher\Node;
 use Stitcher\NodeRenderer;
+use Stitcher\Nodes\NodeFactory;
 use Stitcher\Nodes\RendererFactory;
+use Twig\Environment as TwigEnvironment;
 
 class PageRenderer implements NodeRenderer
 {
-    /** @var \Stitcher\Nodes\RendererFactory */
-    private $factory;
+    private NodeFactory $nodeFactory;
 
-    public function __construct(RendererFactory $factory)
-    {
-        $this->factory = $factory;
+    private RendererFactory $rendererFactory;
+
+    private TwigEnvironment $twig;
+
+    public function __construct(
+        NodeFactory $nodeFactory,
+        RendererFactory $rendererFactory,
+        TwigEnvironment $twig
+    ) {
+        $this->nodeFactory = $nodeFactory;
+        $this->rendererFactory = $rendererFactory;
+        $this->twig = $twig;
     }
 
-    public function render(Node $page): void
+    public function render(Node $node): string
     {
-        if (! $page instanceof Page) {
-            throw InvalidNode::node($page, Page::class);
+        if (! $node instanceof Page) {
+            throw InvalidNode::node($node, Page::class);
         }
 
-        foreach ($page->variables as $key => $variableNode) {
-            $childRenderer = $this->factory->make($variableNode);
+        $variables = [];
 
-            $page->variables[$key] = $childRenderer->render($variableNode);
+        foreach ($node->variables as $key => $variable) {
+            $variableNode = $this->nodeFactory->make($variable);
+
+            $childRenderer = $this->rendererFactory->make($variableNode);
+
+            $variables[$key] = $childRenderer->render($variableNode);
         }
+
+        return $this->twig->render($node->template, $variables);
     }
 }

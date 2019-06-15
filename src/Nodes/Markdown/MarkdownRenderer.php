@@ -3,7 +3,7 @@
 namespace Stitcher\Nodes\Markdown;
 
 use League\CommonMark\CommonMarkConverter;
-use Stitcher\Exception\InvalidNode;
+use Stitcher\Exceptions\InvalidNode;
 use Stitcher\Node;
 use Stitcher\NodeRenderer;
 use Stitcher\Services\Filesystem;
@@ -22,12 +22,12 @@ class MarkdownRenderer implements NodeRenderer
         $this->filesystem = $filesystem;
     }
 
-    public function render(Node $markdown): string
+    public function render(Node $node): string
     {
-        if (! $markdown instanceof Markdown) {
-            throw InvalidNode::node($markdown, Markdown::class);
+        if (! $node instanceof Markdown) {
+            throw InvalidNode::node($node, Markdown::class);
         }
 
-        return $this->converter->convertToHtml($markdown->markdown);
+        return $this->converter->convertToHtml($node->markdown);
     }
 }

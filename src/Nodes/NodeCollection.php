@@ -4,17 +4,31 @@ namespace Stitcher\Nodes;
 
 use ArrayAccess;
 use Iterator;
+use Stitcher\Exceptions\ConfigurationError;
 use Stitcher\Node;
 
 final class NodeCollection implements Iterator, ArrayAccess
 {
     private array $nodes;
 
-    private int $key = 0;
+    private $key = null;
 
-    public function __construct(Node ...$nodes)
+    public static function make(array $nodes, NodeFactory $factory): NodeCollection
     {
-        $this->nodes = array_values($nodes);
+        return new self(array_map(function ($value) use ($factory) {
+            try {
+                return $factory->make($value);
+            } catch (ConfigurationError $exception) {
+                return $value;
+            }
+        }, $nodes));
+    }
+
+    public function __construct(array $nodes)
+    {
+        $this->nodes = $nodes;
+
+        $this->rewind();
     }
 
     public function current(): Node
@@ -24,10 +38,12 @@ final class NodeCollection implements Iterator, ArrayAccess
 
     public function next(): void
     {
-        $this->key++;
+        next($this->nodes);
+
+        $this->key = key($this->nodes);
     }
 
-    public function key(): int
+    public function key()
     {
         return $this->key;
     }
@@ -39,7 +55,9 @@ final class NodeCollection implements Iterator, ArrayAccess
 
     public function rewind(): void
     {
-        $this->key = 0;
+        reset($this->nodes);
+
+        $this->key = key($this->nodes);
     }
 
     public function offsetExists($offset): bool

@@ -1,6 +1,6 @@
 <?php
 
-namespace Stitcher\Exception;
+namespace Stitcher\Exceptions;
 
 use Exception;
 use Stitcher\Node;

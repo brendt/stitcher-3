@@ -8,9 +8,9 @@ class Markdown implements Node
 {
     public string $markdown;
 
-    public static function makeFromFile(string $path): Markdown
+    public static function make(string $file): Markdown
     {
-        return new self(file_get_contents($path));
+        return new self(file_get_contents($file));
     }
 
     public function __construct(string $markdown)
