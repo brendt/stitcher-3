@@ -11,8 +11,7 @@ use Stitcher\Services\Str;
 
 class NodeFactory
 {
-    /** @var \Stitcher\Services\Filesystem */
-    private $fs;
+    private Filesystem $fs;
 
     public function __construct(Filesystem $fs)
     {

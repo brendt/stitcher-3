@@ -7,10 +7,8 @@ use Stitcher\Services\Filesystem;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-    /** @var Container */
     protected Container $container;
 
-    /** @var Filesystem */
     protected Filesystem $fs;
 
     protected function setUp(): void

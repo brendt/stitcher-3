@@ -3,12 +3,12 @@
 namespace Tests\Nodes\Page;
 
 use Stitcher\Nodes\Page\Page;
+use Stitcher\Nodes\Page\PageRenderer;
 use Tests\TestCase;
 
 class PageRendererTest extends TestCase
 {
-    /** @var \Stitcher\Nodes\Page\PageRenderer */
-    private $pageRenderer;
+    private PageRenderer $pageRenderer;
 
     protected function setUp(): void
     {
