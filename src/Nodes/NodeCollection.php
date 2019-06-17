@@ -82,4 +82,9 @@ class NodeCollection implements Iterator, ArrayAccess, Countable
     {
         return count($this->nodes);
     }
+
+    public function toArray(): array
+    {
+        return $this->nodes;
+    }
 }

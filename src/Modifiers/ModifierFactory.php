@@ -20,7 +20,7 @@ class ModifierFactory
                 ! is_array($config)
                 || ! isset($config['variable'], $config['field'])
             ) {
-                // THROW
+                throw InvalidModifier::make($modifierName, ['variable', 'field'], $config);
             }
 
             return $this->container->collectionModifier(

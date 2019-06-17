@@ -7,6 +7,8 @@ use Stitcher\Node;
 
 class Page implements Node
 {
+    public string $url;
+
     public string $template;
 
     public array $variables;
@@ -23,13 +25,24 @@ class Page implements Node
     }
 
     public function __construct(
+        string $url,
         string $template,
         array $variables = [],
         array $modifiers = []
     ) {
+        $this->url = $url;
         $this->template = $template;
         $this->variables = $variables;
         $this->modifiers = $modifiers;
+    }
+
+    public function withUrl(string $id): Page
+    {
+        $page = clone $this;
+
+        $page->url = $id;
+
+        return $page;
     }
 
     public function withVariables(array $variables): Page

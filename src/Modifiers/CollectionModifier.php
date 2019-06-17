@@ -54,7 +54,10 @@ class CollectionModifier implements Modifier
             foreach ($renderedVariable as $id => $data) {
                 $data['id'] = $data['id'] ?? $id;
 
-                $modifiedPages[$id] = $page
+                $pageUrl = str_replace('{' . $this->variableName . '}', $id,$page->url);
+
+                $modifiedPages[$pageUrl] = $page
+                    ->withUrl($pageUrl)
                     ->withVariable($this->variableName, $data);
             }
         }

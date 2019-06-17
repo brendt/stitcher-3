@@ -1,4 +1,6 @@
 a:
   title: a
+  body: body.md
 b:
   title: b
+  body: body.md

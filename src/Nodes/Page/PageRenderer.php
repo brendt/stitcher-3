@@ -33,26 +33,32 @@ class PageRenderer implements NodeRenderer
         $this->twig = $twig;
     }
 
-    public function render(Node $node): string
+    public function render(Node $page): array
     {
-        if (! $node instanceof Page) {
-            throw InvalidNode::node($node, Page::class);
+        if (! $page instanceof Page) {
+            throw InvalidNode::node($page, Page::class);
         }
 
-        $pages = $this->modifyPage($node);
+        $pages = array_map(function (Page $page) {
+            $variables = $this->renderVariables($page->variables);
 
-        $variables = $this->renderVariables($node->variables);
+            return $this->twig->render($page->template, $variables);
+        }, $this->modifyPage($page)->toArray());
 
-        return $this->twig->render($node->template, $variables);
+        return $pages;
     }
 
     private function modifyPage(Page $page): NodeCollection
     {
+        $pages = new NodeCollection([$page->url => $page]);
+
         foreach ($page->modifiers as $modifierName => $modifierConfig) {
             $modifier = $this->modifierFactory->make($modifierName, $modifierConfig);
 
-            dd($modifier);
+            $pages = $modifier->modify($pages);
         }
+
+        return $pages;
     }
 
     private function renderVariables(array $nodeVariables): array
