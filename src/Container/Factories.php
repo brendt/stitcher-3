@@ -13,9 +13,7 @@ trait Factories
 {
     public function rendererFactory(): RendererFactory
     {
-        return $this->singleton(
-            RendererFactory::class,
-            function () {
+        return $this->singleton(RendererFactory::class, function () {
                 return new RendererFactory($this);
             }
         );

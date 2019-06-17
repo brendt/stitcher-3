@@ -6,9 +6,9 @@ use Closure;
 
 class Container
 {
-    private static array $singletons = [];
+    protected Config $config;
 
-    private Config $config;
+    private static array $singletons = [];
 
     use Factories,
         Modifiers,
