@@ -11,6 +11,7 @@ class Container
     private Config $config;
 
     use Factories,
+        Modifiers,
         Renderers,
         Services;
 

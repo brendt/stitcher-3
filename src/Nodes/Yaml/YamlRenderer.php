@@ -2,30 +2,25 @@
 
 namespace Stitcher\Nodes\Yaml;
 
-use Stitcher\Exceptions\ConfigurationError;
 use Stitcher\Exceptions\InvalidNode;
 use Stitcher\Node;
-use Stitcher\NodeRenderer;
+use Stitcher\Nodes\Collection\CollectionRenderer;
 use Stitcher\Nodes\NodeFactory;
 use Stitcher\Nodes\RendererFactory;
-use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Parser as YamlParser;
 
-class YamlRenderer implements NodeRenderer
+class YamlRenderer extends CollectionRenderer
 {
-    private Parser $parser;
-
-    private NodeFactory $nodeFactory;
-
-    private RendererFactory $rendererFactory;
+    private YamlParser $yamlParser;
 
     public function __construct(
-        Parser $parser,
+        YamlParser $yamlParser,
         NodeFactory $nodeFactory,
         RendererFactory $rendererFactory
     ) {
-        $this->parser = $parser;
-        $this->nodeFactory = $nodeFactory;
-        $this->rendererFactory = $rendererFactory;
+        parent::__construct($nodeFactory, $rendererFactory);
+
+        $this->yamlParser = $yamlParser;
     }
 
     public function render(Node $node): array
@@ -34,20 +29,8 @@ class YamlRenderer implements NodeRenderer
             throw InvalidNode::node($node, Yaml::class);
         }
 
-        $array = $this->parser->parse($node->yaml);
+        $array = $this->yamlParser->parse($node->yaml);
 
-        foreach ($array as $key => $item) {
-            try {
-                $node = $this->nodeFactory->make($item);
-            } catch (ConfigurationError $exception) {
-                continue;
-            }
-
-            $nodeRenderer = $this->rendererFactory->make($node);
-
-            $array[$key] = $nodeRenderer->render($node);
-        }
-
-        return $array;
+        return parent::renderArray($array);
     }
 }

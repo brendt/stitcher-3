@@ -3,16 +3,17 @@
 namespace Stitcher\Nodes;
 
 use ArrayAccess;
+use Countable;
 use Iterator;
 use Stitcher\Node;
 
-final class NodeCollection implements Iterator, ArrayAccess
+class NodeCollection implements Iterator, ArrayAccess, Countable
 {
     private array $nodes;
 
     private $key = null;
 
-    public function __construct(array $nodes)
+    public function __construct(array $nodes = [])
     {
         $this->nodes = $nodes;
 
@@ -66,5 +67,19 @@ final class NodeCollection implements Iterator, ArrayAccess
     public function offsetUnset($offset): void
     {
         unset($this->nodes[$offset]);
+    }
+
+    public function merge(Node ...$pages): NodeCollection
+    {
+        foreach ($pages as $page) {
+            $this->nodes[] = $page;
+        }
+
+        return $this;
+    }
+
+    public function count(): int
+    {
+        return count($this->nodes);
     }
 }

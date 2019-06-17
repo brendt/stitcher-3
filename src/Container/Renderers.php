@@ -2,6 +2,7 @@
 
 namespace Stitcher\Container;
 
+use Stitcher\Nodes\Collection\CollectionRenderer;
 use Stitcher\Nodes\Markdown\MarkdownRenderer;
 use Stitcher\Nodes\Page\PageRenderer;
 use Stitcher\Nodes\Yaml\YamlRenderer;
@@ -24,6 +25,7 @@ trait Renderers
         return new PageRenderer(
             $this->nodeFactory(),
             $this->rendererFactory(),
+            $this->modifierFactory(),
             $this->twigParser()
         );
     }
@@ -34,6 +36,14 @@ trait Renderers
             $this->yamlParser(),
             $this->nodeFactory(),
             $this->rendererFactory(),
+        );
+    }
+
+    public function collectionRenderer(): CollectionRenderer
+    {
+        return new CollectionRenderer(
+            $this->nodeFactory(),
+            $this->rendererFactory()
         );
     }
 }

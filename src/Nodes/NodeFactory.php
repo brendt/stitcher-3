@@ -4,8 +4,10 @@ namespace Stitcher\Nodes;
 
 use Stitcher\Exceptions\ConfigurationError;
 use Stitcher\Node;
+use Stitcher\Nodes\Collection\Collection;
 use Stitcher\Nodes\Markdown\Markdown;
 use Stitcher\Nodes\Page\Page;
+use Stitcher\Nodes\Yaml\Yaml;
 use Stitcher\Services\Filesystem;
 use Stitcher\Services\Str;
 
@@ -21,11 +23,11 @@ class NodeFactory
     public function make($value): Node
     {
         if (is_array($value)) {
-            return Page::make($value);
+            return Collection::make($value);
         }
 
         if (Str::endsWith(['.yaml', '.yml'], $value)) {
-            //
+            return Yaml::make($value);
         }
 
         if (Str::endsWith(['.md'], $value)) {
@@ -33,5 +35,10 @@ class NodeFactory
         }
 
         throw ConfigurationError::unknownNode($value);
+    }
+
+    public function makePage(array $values): Page
+    {
+        return Page::make($values);
     }
 }

@@ -24,6 +24,25 @@ class PageRendererTest extends TestCase
             'template.twig',
             [
                 'markdown' => 'markdown.md',
+            ],
+        );
+
+        $html = $this->pageRenderer->render($page);
+
+        $this->assertStringStartsWith('<h1>md</h1>', $html);
+    }
+
+    /** @test */
+    public function test_render_with_modifier()
+    {
+        $page = new Page(
+            'template.twig',
+            [
+                'markdown' => 'markdown.md',
+                'posts' => 'posts.yaml'
+            ],
+            [
+                'collection' => 'posts'
             ]
         );
 

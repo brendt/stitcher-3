@@ -2,6 +2,7 @@
 
 namespace Stitcher\Container;
 
+use Stitcher\Modifiers\ModifierFactory;
 use Stitcher\Nodes\NodeFactory;
 use Stitcher\Nodes\RendererFactory;
 
@@ -24,6 +25,13 @@ trait Factories
     {
         return $this->singleton(NodeFactory::class, function () {
             return new NodeFactory($this->filesystem());
+        });
+    }
+
+    public function modifierFactory(): ModifierFactory
+    {
+        return $this->singleton(ModifierFactory::class, function () {
+            return new ModifierFactory($this);
         });
     }
 }
