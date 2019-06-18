@@ -6,9 +6,8 @@ use Leafo\ScssPhp\Compiler as SassCompiler;
 use Stitcher\Html\Source;
 use Stitcher\Services\Filesystem;
 use tubalmartin\CssMin\Minifier as CssMinifier;
-use function in_array;
 
-class CssExtension
+class CssExtension implements TemplateExtension
 {
     private SassCompiler $sassCompiler;
 
@@ -30,6 +29,11 @@ class CssExtension
         $this->cssMinifier = $cssMinifier;
         $this->filesystem = $filesystem;
         $this->outputFilesystem = $outputFilesystem;
+    }
+
+    public function getName()
+    {
+        return 'css';
     }
 
     public function minify(bool $minify = true): CssExtension

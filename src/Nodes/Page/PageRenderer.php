@@ -9,7 +9,7 @@ use Stitcher\NodeRenderer;
 use Stitcher\Nodes\NodeCollection;
 use Stitcher\Nodes\NodeFactory;
 use Stitcher\Nodes\RendererFactory;
-use Twig\Environment as TwigEnvironment;
+use Stitcher\Templates\TwigRenderer;
 
 class PageRenderer implements NodeRenderer
 {
@@ -19,18 +19,18 @@ class PageRenderer implements NodeRenderer
 
     private ModifierFactory $modifierFactory;
 
-    private TwigEnvironment $twig;
+    private TwigRenderer $twigRenderer;
 
     public function __construct(
         NodeFactory $nodeFactory,
         RendererFactory $rendererFactory,
         ModifierFactory $modifierFactory,
-        TwigEnvironment $twig
+        TwigRenderer $twigRenderer
     ) {
         $this->nodeFactory = $nodeFactory;
         $this->rendererFactory = $rendererFactory;
         $this->modifierFactory = $modifierFactory;
-        $this->twig = $twig;
+        $this->twigRenderer = $twigRenderer;
     }
 
     public function render(Node $page): array
@@ -42,7 +42,7 @@ class PageRenderer implements NodeRenderer
         $pages = array_map(function (Page $page) {
             $variables = $this->renderVariables($page->variables);
 
-            return $this->twig->render($page->template, $variables);
+            return $this->twigRenderer->render($page->template, $variables);
         }, $this->modifyPage($page)->toArray());
 
         return $pages;

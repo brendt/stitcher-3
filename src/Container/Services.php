@@ -10,6 +10,7 @@ use Stitcher\Services\Filesystem;
 use Stitcher\Services\JsMinifier;
 use Stitcher\Templates\CssExtension;
 use Stitcher\Templates\JsExtension;
+use Stitcher\Templates\TwigRenderer;
 use Symfony\Component\Yaml\Parser;
 use tubalmartin\CssMin\Minifier as CssMinifier;
 use Twig\Environment as TwigEnvironment;
@@ -67,15 +68,20 @@ trait Services
         });
     }
 
-    public function twigParser(): TwigEnvironment
+    public function twigRenderer(): TwigRenderer
     {
-        return $this->singleton(TwigEnvironment::class, function () {
-            $loader = new FilesystemLoader(
-                $this->filesystem()->makeFullPath($this->config->templatePath)
-            );
+        return TwigRenderer::make($this->twigEnvironment())
+            ->addExtension($this->jsExtension())
+            ->addExtension($this->cssExtension());
+    }
 
-            return new TwigEnvironment($loader);
-        });
+    public function twigEnvironment(): TwigEnvironment
+    {
+        $loader = new FilesystemLoader(
+            $this->filesystem()->makeFullPath($this->config->templatePath)
+        );
+
+        return new TwigEnvironment($loader);
     }
 
     public function sassCompiler(): SassCompiler

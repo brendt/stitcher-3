@@ -5,7 +5,7 @@ namespace Stitcher\Templates;
 use Stitcher\Services\Filesystem;
 use Stitcher\Services\JsMinifier;
 
-class JsExtension
+class JsExtension implements TemplateExtension
 {
     private JsMinifier $jsMinifier;
 
@@ -27,6 +27,11 @@ class JsExtension
         $this->jsMinifier = $jsMinifier;
         $this->filesystem = $filesystem;
         $this->outputFilesystem = $outputFilesystem;
+    }
+
+    public function getName()
+    {
+        return 'js';
     }
 
     public function minify(bool $minify = true): JsExtension

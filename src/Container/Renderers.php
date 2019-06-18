@@ -26,7 +26,7 @@ trait Renderers
             $this->nodeFactory(),
             $this->rendererFactory(),
             $this->modifierFactory(),
-            $this->twigParser()
+            $this->twigRenderer()
         );
     }
 
