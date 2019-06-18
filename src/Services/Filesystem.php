@@ -25,6 +25,24 @@ class Filesystem
         return file_get_contents($this->makeFullPath($path));
     }
 
+    public function write(string $path, string $contents): Filesystem
+    {
+        ['dirname' => $dirname, 'basename' => $file] = pathinfo($path);
+
+        if (! file_exists($dirname)) {
+            mkdir($dirname, 0755, true);
+        }
+
+        file_put_contents($path, $contents);
+
+        return $this;
+    }
+
+    public function exists(string $path): bool
+    {
+        return file_exists($path);
+    }
+
     public function remove(string $path): Filesystem
     {
         $fullPath = $this->makeFullPath($path);

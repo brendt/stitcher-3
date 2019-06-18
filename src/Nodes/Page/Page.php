@@ -15,9 +15,10 @@ class Page implements Node
 
     public array $modifiers;
 
-    public static function make(array $config): Page
+    public static function make(string $url, array $config): Page
     {
         return new self(
+            $url,
             $config['template'],
             $config['variables'] ?? [],
             $config['modifiers'] ?? []

@@ -2,3 +2,17 @@ test:
   template: template.twig
   variables:
     markdown: markdown.md
+
+/blog/{post}:
+  template: detail.twig
+  variables:
+    post: posts.yaml
+  modifiers:
+    collection:
+      variable: post
+      field: title
+
+/a/b/c:
+  template: template.twig
+  variables:
+    markdown: markdown.md

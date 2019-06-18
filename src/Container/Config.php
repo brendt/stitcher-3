@@ -6,5 +6,7 @@ class Config
 {
     public string $basePath;
 
-    public string $templateDirectory;
+    public string $templatePath;
+
+    public string $outputPath;
 }

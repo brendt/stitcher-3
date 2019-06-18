@@ -37,8 +37,8 @@ class NodeFactory
         throw ConfigurationError::unknownNode($value);
     }
 
-    public function makePage(array $values): Page
+    public function makePage(string $url, array $values): Page
     {
-        return Page::make($values);
+        return Page::make($url, $values);
     }
 }
