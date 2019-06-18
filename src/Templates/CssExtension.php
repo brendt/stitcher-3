@@ -32,11 +32,13 @@ class CssExtension
         $this->outputFilesystem = $outputFilesystem;
     }
 
-    public function minify(bool $minify = true): self
+    public function minify(bool $minify = true): CssExtension
     {
-        $this->minify = $minify;
+        $extension = clone $this;
 
-        return $this;
+        $extension->minify = $minify;
+
+        return $extension;
     }
 
     public function link(string $src): string

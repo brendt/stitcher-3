@@ -7,7 +7,9 @@ use League\CommonMark\Environment as CommonMarkEnvironment;
 use Stitcher\Actions\RenderAction;
 use Stitcher\Actions\RenderPageAction;
 use Stitcher\Services\Filesystem;
+use Stitcher\Services\JsMinifier;
 use Stitcher\Templates\CssExtension;
+use Stitcher\Templates\JsExtension;
 use Symfony\Component\Yaml\Parser;
 use tubalmartin\CssMin\Minifier as CssMinifier;
 use Twig\Environment as TwigEnvironment;
@@ -93,12 +95,30 @@ trait Services
     public function cssExtension(): CssExtension
     {
         return $this->singleton(CssExtension::class, function () {
-            return new CssExtension(
+            return (new CssExtension(
                 $this->sassCompiler(),
                 $this->cssMinifier(),
                 $this->filesystem(),
                 $this->outputFilesystem()
-            );
+            ))->minify($this->config->minify_css);
+        });
+    }
+
+    public function jsMinifier(): JsMinifier
+    {
+        return $this->singleton(JsMinifier::class, function () {
+            return new JsMinifier();
+        });
+    }
+
+    public function jsExtension(): JsExtension
+    {
+        return $this->singleton(JsExtension::class, function () {
+            return (new JsExtension(
+                $this->jsMinifier(),
+                $this->filesystem(),
+                $this->outputFilesystem()
+            ))->minify($this->config->minify_js);
         });
     }
 }

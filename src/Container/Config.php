@@ -9,4 +9,8 @@ class Config
     public string $templatePath;
 
     public string $outputPath;
+
+    public bool $minify_js = false;
+
+    public bool $minify_css = false;
 }
