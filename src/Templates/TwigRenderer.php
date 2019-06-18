@@ -24,8 +24,8 @@ class TwigRenderer
         return $this;
     }
 
-    public function render(string $name, array $variables): string
+    public function render(string $template, array $variables = []): string
     {
-        return $this->twig->render($name, $variables);
+        return $this->twig->render($template, $variables);
     }
 }
