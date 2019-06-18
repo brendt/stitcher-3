@@ -7,9 +7,12 @@ use League\CommonMark\Environment as CommonMarkEnvironment;
 use Stitcher\Actions\RenderAction;
 use Stitcher\Actions\RenderPageAction;
 use Stitcher\Services\Filesystem;
+use Stitcher\Templates\CssExtension;
 use Symfony\Component\Yaml\Parser;
+use tubalmartin\CssMin\Minifier as CssMinifier;
 use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader;
+use Leafo\ScssPhp\Compiler as SassCompiler;
 
 /**
  * @mixin \Stitcher\Container\Container
@@ -70,6 +73,32 @@ trait Services
             );
 
             return new TwigEnvironment($loader);
+        });
+    }
+
+    public function sassCompiler(): SassCompiler
+    {
+        return $this->singleton(SassCompiler::class, function () {
+            return new SassCompiler();
+        });
+    }
+
+    public function cssMinifier(): CssMinifier
+    {
+        return $this->singleton(CssMinifier::class, function () {
+            return new CssMinifier();
+        });
+    }
+
+    public function cssExtension(): CssExtension
+    {
+        return $this->singleton(CssExtension::class, function () {
+            return new CssExtension(
+                $this->sassCompiler(),
+                $this->cssMinifier(),
+                $this->filesystem(),
+                $this->outputFilesystem()
+            );
         });
     }
 }

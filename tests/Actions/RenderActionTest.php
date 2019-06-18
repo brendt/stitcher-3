@@ -21,7 +21,7 @@ class RenderActionTest extends TestCase
         ];
 
         foreach ($tests as $path) {
-            $this->assertTrue($this->fs->exists($this->fs->makeFullPath($path)));
+            $this->assertTrue($this->fs->exists($path));
         }
     }
 }

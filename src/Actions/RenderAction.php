@@ -47,7 +47,7 @@ class RenderAction
 
         foreach ($htmlFiles as $url => $htmlFile) {
             $this->outputFilesystem->write(
-                $this->outputFilesystem->makeFullPath($url . '.html'),
+                $url . '.html',
                 $htmlFile
             );
         }

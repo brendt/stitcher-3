@@ -15,7 +15,9 @@
         "league/commonmark": "^0.19.2",
         "symfony/yaml": "^4.3",
         "twig/twig": "^2.11",
-        "ext-json" : "*"
+        "ext-json" : "*",
+        "leafo/scssphp": "^0.8.2",
+        "mrclay/minify": "^3.0"
     },
     "require-dev" : {
         "phpunit/phpunit" : "^8.3@dev",
