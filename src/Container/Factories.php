@@ -14,9 +14,8 @@ trait Factories
     public function rendererFactory(): RendererFactory
     {
         return $this->singleton(RendererFactory::class, function () {
-                return new RendererFactory($this);
-            }
-        );
+            return new RendererFactory($this);
+        });
     }
 
     public function nodeFactory(): NodeFactory
