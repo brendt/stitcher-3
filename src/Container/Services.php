@@ -42,30 +42,31 @@ trait Services
 
     public function filesystem(): Filesystem
     {
-        return $this->singleton(Filesystem::class, function () {
-            return new Filesystem($this->config->basePath);
-        });
+        return $this->singleton(
+            Filesystem::class,
+            fn () => new Filesystem($this->config->basePath)
+        );
     }
 
     public function outputFilesystem(): Filesystem
     {
-        return $this->singleton(Filesystem::class . '-output', function () {
-            return new Filesystem($this->config->outputPath);
-        });
+        return $this->singleton(
+            Filesystem::class . '-output',
+            fn () => new Filesystem($this->config->outputPath)
+        );
     }
 
     public function markdownParser(): CommonMarkConverter
     {
-        return $this->singleton(CommonMarkConverter::class, function () {
-            return new CommonMarkConverter([], CommonMarkEnvironment::createCommonMarkEnvironment());
-        });
+        return $this->singleton(
+            CommonMarkConverter::class,
+            fn () => new CommonMarkConverter([], CommonMarkEnvironment::createCommonMarkEnvironment())
+        );
     }
 
     public function yamlParser(): Parser
     {
-        return $this->singleton(Parser::class, function () {
-            return new Parser();
-        });
+        return $this->singleton(Parser::class, fn () => new Parser());
     }
 
     public function twigRenderer(): TwigRenderer
@@ -86,45 +87,41 @@ trait Services
 
     public function sassCompiler(): SassCompiler
     {
-        return $this->singleton(SassCompiler::class, function () {
-            return new SassCompiler();
-        });
+        return $this->singleton(SassCompiler::class, fn () => new SassCompiler());
     }
 
     public function cssMinifier(): CssMinifier
     {
-        return $this->singleton(CssMinifier::class, function () {
-            return new CssMinifier();
-        });
+        return $this->singleton(CssMinifier::class, fn () => new CssMinifier());
     }
 
     public function cssExtension(): CssExtension
     {
-        return $this->singleton(CssExtension::class, function () {
-            return (new CssExtension(
+        return $this->singleton(
+            CssExtension::class,
+            fn () => (new CssExtension(
                 $this->sassCompiler(),
                 $this->cssMinifier(),
                 $this->filesystem(),
                 $this->outputFilesystem()
-            ))->minify($this->config->minify_css);
-        });
+            ))->minify($this->config->minify_css)
+        );
     }
 
     public function jsMinifier(): JsMinifier
     {
-        return $this->singleton(JsMinifier::class, function () {
-            return new JsMinifier();
-        });
+        return $this->singleton(JsMinifier::class, fn () => new JsMinifier());
     }
 
     public function jsExtension(): JsExtension
     {
-        return $this->singleton(JsExtension::class, function () {
-            return (new JsExtension(
+        return $this->singleton(
+            JsExtension::class,
+            fn () => (new JsExtension(
                 $this->jsMinifier(),
                 $this->filesystem(),
-                $this->outputFilesystem()
-            ))->minify($this->config->minify_js);
-        });
+                $this->outputFilesystem())
+            )->minify($this->config->minify_js)
+        );
     }
 }

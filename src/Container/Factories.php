@@ -13,22 +13,25 @@ trait Factories
 {
     public function rendererFactory(): RendererFactory
     {
-        return $this->singleton(RendererFactory::class, function () {
-            return new RendererFactory($this);
-        });
+        return $this->singleton(
+            RendererFactory::class,
+            fn () => new RendererFactory($this)
+        );
     }
 
     public function nodeFactory(): NodeFactory
     {
-        return $this->singleton(NodeFactory::class, function () {
-            return new NodeFactory($this->filesystem());
-        });
+        return $this->singleton(
+            NodeFactory::class,
+            fn () => new NodeFactory($this->filesystem())
+        );
     }
 
     public function modifierFactory(): ModifierFactory
     {
-        return $this->singleton(ModifierFactory::class, function () {
-            return new ModifierFactory($this);
-        });
+        return $this->singleton(
+            ModifierFactory::class,
+            fn () => new ModifierFactory($this)
+        );
     }
 }
